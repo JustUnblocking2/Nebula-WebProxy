@@ -1,52 +1,39 @@
 
-<div align=center> 
-<img src='https://nebulaproxy.nebula.bio/images/logo.png' width="100px" height="100px">
-<h1>  Nebula </h1>
-Nebula Web is an official flagship of Nebula Services. Nebula Web is a stunning and sleak webproxy with support for hundreds of popular sites, and partial support for WebRTC, used in GfN. With Nebula Web, the sky is the limit. Enjoy. 
-</div>
+
+# Nebula
+
+NebulaWeb is an official flagship of Nebula Services and Nebula Developer Labs. NebulaWeb is a stunning, sleek, and functional web-proxy with support for thousands of popular sites. With NebulaWeb, the sky is the limit.
+
+![license](https://img.shields.io/badge/License-GNU%20AGPL%20v3-blue) 
+
+![chat](https://img.shields.io/badge/chat-1139%20online-brightgreen) 
+
+
 
 
 ## Features
 
-- Stunning UI with multiple themes 
-- XOR/b64 Encrypts all traffic sent from Nebula
+- Stunning and highly functional UI with multiple themes 
+- XOR/b64 encoding all traffic
 - Hides your IP from sites
 - [List of officially supported sites](https://github.com/NebulaServices/Nebula/blob/main/docs/officially-supported-sites.md)
 - *limited* mobile support
-- StealthMode (buffed `about:blank` cloaking)
+- Stealth Mode (buffed `about:blank` cloaking)
+- **NEW** Clickoff cloaking 
+- **NEW** Email OTP verification 
 
-
-
-### Self Hosting
-```bash
-$ git clone https://github.com/NebulaServices/Nebula.git
-$ cd Nebula
-$ npm ci
-$ npm start
-```
-
-## Tech Stack
-
-- HTML, JS, CSS
-- Partical.JS 
-- UV Backend Proxy 
-- Osana Backend Proxy
-- Cyclone Backend Proxy
-- **Server:** Bare server on Node  
-
-
-## Support
-
-For support, email chloe@nebula.bio or join our discord: discord.nebula.bio
-
-
-## Demo
-
-[Click here to see a demo of Nebula](https://tutorialread.beauty/)
 
 # Deployment
 
-## Quick Deployment Options
+Table of contents 
+- Quick & easy deployment
+- Deployment configuration explaination 
+- how to use email OTP Verification mode
+- Advanced Deployment 
+- Filesystem
+
+
+## Quick & Easy Deployment Options
 [![Deploy to Heroku](https://raw.githubusercontent.com/BinBashBanana/deploy-buttons/master/buttons/remade/heroku.svg)](https://heroku.com/deploy/?template=https://github.com/NebulaServices/Nebula)
 <br>
 [![Run on Replit](https://raw.githubusercontent.com/BinBashBanana/deploy-buttons/master/buttons/remade/replit.svg)](https://replit.com/github/NebulaServices/Nebula)
@@ -64,6 +51,37 @@ For support, email chloe@nebula.bio or join our discord: discord.nebula.bio
 [![Deploy To Koyeb](https://binbashbanana.github.io/deploy-buttons/buttons/remade/koyeb.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/NebulaServices/Nebula&branch=main&name=NebulaProxy)
 
 ---
+## Deployment Configuration Guide 
+(Example configuration with none-json notes) 
+```json
+{ 
+  "verification": false, // disabled by default 
+  "api_key":" Your sendgrid API key used to access your account from the API to send emails",
+  "sendFromEmail":"The email that will send the one time password (MUST BE VERIFIED IN SENDGRID)",
+  "type": "code", // DO NOT TOUCH
+  "email": " The email you want to use for recieving OTP "
+}
+```
+
+## Email Verification OTP 
+### What is this? 
+Email verification is a new and unique feature that we've implemented in the event that someone wants to keep their deployment of Nebula private and secure. 
+### What does it do
+When a user tries to access the website, before allowed access they will be asked for a One time password sent to an email set in the deployment configuration. Once verified, they will have 15 day access to the site. 
+
+* Firstly, We need to enable verification within the deployment configuration
+	* change `"verification":false,` to `"verification":true,` 
+	* _Note: You have to reboot the node app for any changes to take place._
+* Now, we need to use an api to send a message 
+	* Make an account at Sendgrid (https://app.sendgrid.com/)
+	* _Note: It is likely that other versions of Nebula will use a different package to send emails._ 
+* Verify the email you want to recieve emails from (Create a sender identity)
+	* Go to settings -> Sender authentication and click Verify a Single Sender
+* Now, We need to get the API key to connect to the API 
+	* Go to settings -> API Keys -> and make an API key. 
+* Complete the information in the deployment config `deployment.config.json` such as: 
+	
+  
 ## Advanced Deployment 
 
 ### Initial configuration
@@ -111,19 +129,47 @@ sudo nohup PORT=80 node . &
 
 **Make sure your firewall is configured to let through port 80 traffic!** \
 *Note: Server will need to run` cd Nebula && sudo nohup PORT=80 node . &` on reboot*
-(Nebula's license is now GNU AGPL V3 as of v7.10)
+
+## File Structure
+| **File**                         | Purpose                                                                                                  |   |
+|----------------------------------|----------------------------------------------------------------------------------------------------------|---|
+| `static/index.html`              | The main frontend visuals for NebulaWEB.                                                                 |   |
+| `static/unv.html`                | The verification-required frontend/visuals.                                                              |   |
+| `static/options/`                | The frontend for Nebula's options, settings, and preferences.                                            |   |
+| `static/resources/v.js`          | Client verification system for the OTP system.                                                           |   |
+| `static/resources/nebulamain.js` | All of the DOM/client code for NebulaWEB. Includes options, themeSystem, cloak, stealthengine, and more. |   |
+| `app.js`                         | The backend server for Nebula. Contains Nodestatic, Bare, HTTP, and more.                                |   |
+
+
+## Tech Stack
+
+- HTML, JS, CSS
+- Partical.JS (Specifically v4, 5, 6.1 &< only) 
+- UV Backend Proxy 
+- Osana Backend Proxy
+- TompHTTP Bare Server
+- node HTTP (No ExpressJS!) 
+
+## Support
+
+For support, email chloe@nebula.bio or join our discord: discord.gg/unblocker
+
+
+## Demo
+
+[Click here to see a demo of Nebula](https://nebulaproxy.io/)
+
 
 ## Acknowledgements
 
  - [UV (one of the back-end proxy we use)](https://github.com/titaniumnetwork-dev/Ultraviolet)
- - [Cyclone (one of the back-end proxy we use)](https://github.com/NebulaServices/Cyclone)
  - [Osana (one of the back-end proxy we use)](https://github.com/NebulaServices/Osana)
  - [Bare Server](https://github.com/tomphttp/bare-server-node)
  - [Partical.JS (v4, 5, 6.1 &< only)](https://github.com/VincentGarreau/particles.js)
 
 ## License
-
+(Nebula's license is now GNU AGPL V3 as of v7.10)
 Copyright Nebula Services 2021 - Present
 <br>
-This project uses the MIT license. 
+This project uses the AGLP GNU V3 license. 
 
